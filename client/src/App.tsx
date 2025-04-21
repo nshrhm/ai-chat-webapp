@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
 
 type Role = 'user' | 'assistant';
 interface Message {
@@ -14,6 +16,7 @@ interface ModelInfo {
     cachedInput: number;
     output: number;
   };
+  supportsTemperature?: boolean;
 }
 
 const App: React.FC = () => {
@@ -100,23 +103,31 @@ const App: React.FC = () => {
             ${currentModel.fee.output.toFixed(2)} (USD / 1M tokens)
           </div>
         )}
-        <label className="mb-2 font-medium" htmlFor="temperature">
-          Temperature: {temperature.toFixed(1)}
-        </label>
-        <input
-          id="temperature"
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={temperature}
-          onChange={e => {
-            const val = parseFloat(e.target.value);
-            setTemperature(val);
-            localStorage.setItem(`temperature_${selectedModel}`, val.toString());
-          }}
-          className="w-full mb-4"
-        />
+        {currentModel && currentModel.supportsTemperature ? (
+          <>
+            <label className="mb-2 font-medium" htmlFor="temperature">
+              Temperature: {temperature.toFixed(1)}
+            </label>
+            <input
+              id="temperature"
+              type="range"
+              min="0"
+              max="1"
+              step="0.1"
+              value={temperature}
+              onChange={e => {
+                const val = parseFloat(e.target.value);
+                setTemperature(val);
+                localStorage.setItem(`temperature_${selectedModel}`, val.toString());
+              }}
+              className="w-full mb-4"
+            />
+          </>
+        ) : (
+          <div className="mb-4 text-sm text-gray-500">
+            このモデルは temperature 設定に対応していません。
+          </div>
+        )}
         <div className="flex-1 overflow-auto space-y-2 mb-4">
           {messages.map((msg, i) => (
             <div
@@ -127,7 +138,15 @@ const App: React.FC = () => {
               <span className="block font-medium">
                 {msg.role === 'user' ? 'あなた' : 'AI'}:
               </span>
-              <span>{msg.content}</span>
+              <span>
+                {msg.role === 'assistant' ? (
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                    {msg.content}
+                  </ReactMarkdown>
+                ) : (
+                  msg.content
+                )}
+              </span>
             </div>
           ))}
         </div>
