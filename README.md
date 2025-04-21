@@ -1,6 +1,5 @@
 # ai-chat-webapp
 
-[![CI](https://github.com/nshrhm/ai-chat-webapp/actions/workflows/ci.yml/badge.svg)](https://github.com/nshrhm/ai-chat-webapp/actions/workflows/ci.yml)
 [![Node.js](https://img.shields.io/badge/node-%3E=_18-brightgreen.svg)](https://nodejs.org/)
 
 OpenAI の複数モデル・API を比較しながらチャット体験を検証できる Web アプリケーション。  
