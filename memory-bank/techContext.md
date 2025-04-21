@@ -1,0 +1,22 @@
+# Technical Context: ai‑chat‑webapp
+
+- ランタイム & パッケージ管理  
+  - Node.js ≥ 18, pnpm ≥ 8  
+- モノレポ構成  
+  - pnpm workspaces で `client/` (React + Vite + TypeScript + TailwindCSS) と `server/` (Express + TypeScript) を分割  
+- フロントエンド  
+  - Vite 開発サーバー & 本番ビルド  
+  - React 19 + TypeScript + TailwindCSS (JIT モード)  
+  - PostCSS（CommonJS 設定）  
+  - Vite proxy 設定で CORS を回避  
+- バックエンド  
+  - Express + TypeScript (ESM)  
+  - ts-node/esm ローダー指定の nodemon でホットリロード  
+  - dotenv で `.env` から OPENAI_API_KEY を読み込み  
+  - OpenAI SDK (`openai@4`) を使用して Chat API 呼び出し  
+- テスト & Lint  
+  - Vitest (フロント) / Jest+Supertest (バック) 予定  
+  - ESLint + Prettier + Husky でプリプッシュチェック  
+- CI/CD  
+  - GitHub Actions で Lint → Test → Build → Deploy  
+  - Vercel & Render/Railway 連携による自動デプロイ
