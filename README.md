@@ -8,7 +8,9 @@ OpenAI の複数モデル・API を比較しながらチャット体験を検証
 
 ## デモ
 
-![スクリーンショット](docs/screenshot.png)
+![利用例](docs/fig01.png)
+
+![モデル選択画面](docs/fig02.png)
 
 ## Features
 
